@@ -1,8 +1,8 @@
-from Individu import Individu
-from Eugenisme import Eugenisme
+from Individu_phrase import IndividuPhrase
+from Eugenisme_phrase import EugenismePhrase
 
-cible = "Paul le gros KING BODERL"
-eug = Eugenisme(100,len(cible))
+cible = "La marche du vertueux"
+eug = EugenismePhrase(100,len(cible))
 population = eug.get_population()
 indivtri = eug.triIndividu(cible,population)
 
