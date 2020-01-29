@@ -42,7 +42,7 @@ class EugenismePhrase:
         i = 1
         for key in self.tri_individu:            
             self.selection.append(key[0])
-            if i == (taux * 100):
+            if i == (taux * self.nb_individu):
                 break
             i += 1
     
