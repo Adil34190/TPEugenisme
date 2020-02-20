@@ -9,13 +9,10 @@ class EugenismePhrase:
         self.tri_individu = {}
         self.selection = []
         self.nb_individu = nb_individu
-        self.generer_population(taille_individu)
-    
-    def generer_population(self, taille_individu):
-
         for i in range(self.nb_individu):
             ind = IndividuPhrase(taille_individu)
-            self.population.append(ind.AfficherIndividu())
+            self.population.append(ind.get_Individu())
+        
     
     @staticmethod
     def Fitness(str, cible = "Sans Rigoler"):        
@@ -40,7 +37,7 @@ class EugenismePhrase:
         self.selection = []
         self.tri_individu = self.triIndividu(cible,self.population)
         i = 1
-        for key in self.tri_individu:            
+        for items in self.tri_individu:            
             self.selection.append(key[0])
             if i == (taux * self.nb_individu):
                 break
@@ -62,7 +59,7 @@ class EugenismePhrase:
             
     def Mutation(self,enfant):
         index = random.randrange(len(enfant))
-        lettre = random.choice(string.ascii_letters + ' ')
+        lettre = random.choice(string.ascii_letters + ' é' +"'")
         enfant = list(enfant)
         enfant[index] = lettre
         enfant = "".join(enfant)

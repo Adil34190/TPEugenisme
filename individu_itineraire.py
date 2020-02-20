@@ -3,18 +3,19 @@ import string
 
 class IndividuItineraire:
 
-    def __init__(self):
-        self._itinéraire = dict()
-        for i in range (0,11):
+    def __init__(self, nb_villes = 10):
+        self._villes = list()
+        self._villes_noms = dict()
+        for i in range (0,nb_villes):
             coordonnées = list()
-            ville = random.choice('ADBCDEFGHIJK')
-            while ville in self._itinéraire.keys():
-                ville = random.choice('ADBCDEFGHIJK')
-            x = random.randrange(100)
-            y = random.randrange(100)
-            coordonnées.append(x)
-            coordonnées.append(y)
-            self._itinéraire[ville] = coordonnées
+            coordonnées.append(random.randrange(100))
+            coordonnées.append(random.randrange(100))
+            self._villes.append(coordonnées)
+            self._villes_noms['Ville'+ str(i)] = coordonnées
+            
     
     def getItinéraire(self):
-        return self._itinéraire
+        return self._villes
+
+    def get_villes_et_noms(self):
+        return self._villes_noms
