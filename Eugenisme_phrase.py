@@ -1,8 +1,9 @@
 from Individu_phrase import IndividuPhrase
+from Eugenisme import Eugenisme
 import random
 import string
 
-class EugenismePhrase:
+class EugenismePhrase(Eugenisme):
 
     def __init__(self, nb_individu = 100, taille_individu = 12):
         self.population = []
@@ -24,7 +25,7 @@ class EugenismePhrase:
             i += 1
         return (count/len(cible))
 
-    def triIndividu(self,cible,population):
+    def Tri(self,cible,population):
         triIndiv = {}
         for str in population:
             fitness = self.Fitness(str, cible)
@@ -33,12 +34,12 @@ class EugenismePhrase:
         return triIndiv
 
 
-    def Selection(self,cible, taux = 0.3):
+    def Selection(self, cible, taux = 0.3):
         self.selection = []
-        self.tri_individu = self.triIndividu(cible,self.population)
+        self.tri_individu = self.Tri(cible,self.population)
         i = 1
         for items in self.tri_individu:            
-            self.selection.append(key[0])
+            self.selection.append(items[0])
             if i == (taux * self.nb_individu):
                 break
             i += 1

@@ -3,16 +3,17 @@ from individu_itineraire import IndividuItineraire
 from random import sample
 import random
 import math
+from itertools import islice
 
-class EugenismeItineraire():
+class EugenismeItineraire(Eugenisme):
     
-    def __init__(self, nb_population = 50):
+    def __init__(self, nb_population = 50, nb_villes = 20):
         self._liste_ville = []
         self._liste_itineraire = []
         self._itineraires_tries = {}
-        self._itineraires_selectionnes = []
+        self._itineraires_selectionnes = {}
         self._nb_itineraires = nb_population
-        ind = IndividuItineraire(20)
+        ind = IndividuItineraire(nb_villes)
         self._liste_ville = ind.getItinéraire()
         for i in range(0, nb_population):
             self._liste_itineraire.append(sample(self._liste_ville,len(self._liste_ville)))
@@ -24,7 +25,8 @@ class EugenismeItineraire():
             fitness = self.Fitness(villes)
             Itis[fitness] = villes
         for key in sorted(Itis.keys()):
-            triIti[key] = Itis.get(key) 
+            triIti[key] = Itis.get(key)
+        #print("Liste triée: \n" + str(triIti)) 
         return triIti
     
     def Fitness(self, villes):
@@ -38,37 +40,38 @@ class EugenismeItineraire():
         return somme
 
     def Selection(self, taux = 0.3):
-        self._itineraires_selectionnes = []  
+        self._itineraires_selectionnes = {}  
         self._itineraires_tries = self.Tri(self._liste_itineraire)
-        i = 1
+        """ i = 1
         for villes in self._itineraires_tries.values():            
             self._itineraires_selectionnes.append(villes)
             if i == (taux * self._nb_itineraires):
                 break
-            i += 1
+            i += 1 """
+        self._itineraires_selectionnes = dict(islice(self._itineraires_tries.items(), round(taux * self._nb_itineraires)))
+        #print("Liste Séléctionnée: \n" + str(self._itineraires_selectionnes))
 
     def Crossover(self):
         self._liste_itineraire = []        
         for i in range(1,self._nb_itineraires):
             enfant = list()
-            parent1 = self._itineraires_selectionnes[random.randrange(len(self._itineraires_selectionnes))]
-            parent2 = self._itineraires_selectionnes[random.randrange(len(self._itineraires_selectionnes))]
+            parent1 = list(self._itineraires_selectionnes.values())[random.randrange(len(self._itineraires_selectionnes))].copy()
+            parent2 = list(self._itineraires_selectionnes.values())[random.randrange(len(self._itineraires_selectionnes))].copy()
             while parent2 == parent1:
-                parent2 = self._itineraires_selectionnes[random.randrange(len(self._itineraires_selectionnes))]
-            enfant = parent1[round((len(parent1)/2)) - 2:(round(len(parent1)/2)) + 3]
-            enfant_temporaire = parent2
+                parent2 = list(self._itineraires_selectionnes.values())[random.randrange(len(self._itineraires_selectionnes))].copy()
+            taille = round((len(parent1)/2))
+            enfant = parent1[(taille - 2):(taille + 2)]
+            enfant_temporaire = parent2.copy()
 
             for j in range(0,len(enfant)):
                 enfant_temporaire.remove(enfant[j])
-                    
-            enfant_temporaire[round(len(enfant_temporaire)/2):round(len(enfant_temporaire)/2)] = enfant
-            enfant = enfant_temporaire
+
+            taille = round((len(parent2)/2))        
+            enfant_temporaire[taille:taille] = enfant
+            enfant = enfant_temporaire.copy()
             #enfant.extend(villes_uniques)
             enfant = self.Mutation(enfant)
-            if enfant not in self._liste_itineraire:
-                self._liste_itineraire.append(enfant)
-            else:
-                i -= 1
+            self._liste_itineraire.append(enfant)
 
     def Mutation(self,enfant):
         a, b = random.randrange(len(enfant)), random.randrange(len(enfant))
