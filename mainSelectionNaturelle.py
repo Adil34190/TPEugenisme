@@ -3,6 +3,27 @@ from Eugenisme_itineraire import EugenismeItineraire
 import matplotlib.pyplot as plt
 import string
 
+"""
+TP Algorithme génétique
+
+Auteur: EL HAJJAJI Adil
+
+fonctionalités:
+
+-Phrase
+-Itinéraire (ATTENTION: Cette fonctionnalité fonctionne sur certains pc, mais sur le mien il plante.
+J'aimerais qu'il marche lors de votre démo mais je ne garanti rien)
+
+Observations après plusieurs tests:
+
+-Plus on diminue le taux et plus on augmente le nombre de population, et plus la cible sera trouvée rapidement
+
+-Pour les itinéraires, comme on ne connait pas la cible ,on regarde à quel moment la distance stagne.
+Un taux de 10 pour cent et une population superieure à 800 permet d'arriver à un résultat à peu près satisfaisant.
+
+
+"""
+
 def phrase(l_cible, nb_population, taux_selection):
     cible = l_cible
     eug = EugenismePhrase(nb_population,len(cible))
